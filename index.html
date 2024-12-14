@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全民潮AI创至联盟</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKZnJwCmZycHpmcnKaZnJ0mmZydJpmcnKaZnJwemZycAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApWcnAKZnJyemZyfzpmcn/6ZnJ/+mZyf/pmcn86ZnJyemZycAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKZnJwCmZycdpmcn4aZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn4aZnJx2mZycAAAAAAAAAAAAAAAAAAAAAAAAAAACmZycApmcnHaZnJ+GmZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn4aZnJx2mZycAAAAAAAAAAAAAAAAApWYnAKZnJyemZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcnJqZnJwAAAAAAAAAAAKZnJwemZyfzpmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn86ZnJwemZycAAAAAAKZnJwCmZycppmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZycppmcnAAAAAACmZycHpmcnSaZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZydJpmcnBwAAAACmZycApmcnKaZnJ0mmZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZydJpmcnKaZnJwAAAAAApmcnB6ZnJymmZydJpmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZydJpmcnKaZnJwcAAAAAAAAAAKZnJwCmZycHpmcnKaZnJ0mmZyf/pmcn/6ZnJ/+mZyf/pmcn/6ZnJ/+mZydJpmcnKaZnJwemZycAAAAAAAAAAAAAAAAApWcnAKZnJwemZycppmcnSaZnJ/+mZyf/pmcn/6ZnJ/+mZydJpmcnKaZnJwemZycAAAAAAAAAAAAAAAAAAAAAAAAAAACmZycApmcnB6ZnJymmZydJpmcn86ZnJ/OmZydJpmcnKaZnJwemZycAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApWcnAKZnJwemZycppmcnKaZnJwemZycAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP5/AAD8PwAA+B8AAPAPAADgBwAAwAMAAMADAADAAwAAwAMAAOAHAADwDwAA+B8AAPw/AAD+fwAA//8AAA==" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h1>全民潮AI创至联盟</h1>
+            <div class="login-form">
+                <div class="input-group">
+                    <label>项目名称</label>
+                    <input type="text" id="projectName" placeholder="请输入：全民潮AI创至联盟">
+                    <small class="input-tip">请输入完整的项目名称，不要包含多余的空格</small>
+                </div>
+                <div class="input-group">
+                    <label>项目网址</label>
+                    <input type="text" id="projectUrl" placeholder="请输入：cy.waryts.com">
+                    <small class="input-tip">输入网址时不需要包含 http:// 或 https://</small>
+                </div>
+                <button id="loginButton">登录</button>
+                <p class="error-message" id="loginError"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用界面 -->
+    <div class="app-wrapper" id="appWrapper" style="display: none;">
+        <!-- 移动端菜单按钮 -->
+        <button class="menu-button" id="menuButton">☰</button>
+
+        <!-- 遮罩层 -->
+        <div class="overlay" id="overlay"></div>
+
+        <div class="app-container">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <button id="newChatButton" title="新建聊天">+ 新建聊天</button>
+                </div>
+                <div class="chat-list" id="chatList">
+                    <!-- 聊天列表将在这里动态添加 -->
+                </div>
+                <div class="sidebar-footer">
+                    <button id="settingsButton" title="设置">⚙️ 设置</button>
+                    <button id="canvasButton" title="打开Canvas编辑器">Canvas编辑器</button>
+                </div>
+            </div>
+
+            <!-- 聊天容器 -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title-container">
+                        <h1 id="chatTitle">新的对话</h1>
+                        <button id="editTitleButton" aria-label="编辑标题" title="编辑标题">✏️</button>
+                    </div>
+                    <div class="header-buttons">
+                        <button id="importButton" aria-label="导入文本" title="导入文本">📄</button>
+                        <button id="exportButton" aria-label="导出聊天记录" title="导出聊天记录">📥</button>
+                        <button id="clearButton" aria-label="清除聊天" title="清除聊天">🗑️</button>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- 消息将在这里动态添加 -->
+                </div>
+                <div class="chat-input">
+                    <textarea id="userInput" placeholder="输入您的问题..." aria-label="聊天输入框"></textarea>
+                    <button id="sendButton" aria-label="发送消息">发送</button>
+                </div>
+            </div>
+
+            <!-- Canvas编辑器 -->
+            <div class="canvas-container" id="canvasContainer">
+                <div class="canvas-header">
+                    <h2>Canvas编辑器</h2>
+                    <div class="canvas-tools">
+                        <button id="addBlockButton" title="添加新的内容块">+ 添加内容</button>
+                        <button id="aiAssistButton" title="使用AI助手">🤖 AI助手</button>
+                        <button id="closeCanvasButton" title="关闭编辑器">✕ 关闭</button>
+                    </div>
+                </div>
+                <div class="canvas-workspace" id="canvasWorkspace">
+                    <!-- 内容块将在这里动态添加 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 块菜单 -->
+        <div class="block-menu" id="blockMenu">
+            <button data-type="text" title="创建文本内容块">📝 文本块</button>
+            <button data-type="prompt" title="创建AI提示块">💡 提示块</button>
+            <button data-type="code" title="创建代码块">💻 代码块</button>
+            <button data-type="image" title="创建图片块">🖼️ 图片块</button>
+        </div>
+
+        <!-- AI助手对话框 -->
+        <div class="ai-assist-dialog" id="aiAssistDialog">
+            <div class="dialog-content">
+                <h3>AI助手</h3>
+                <div class="ai-assist-options">
+                    <button data-action="generate" title="生成新内容">✨ 生成内容</button>
+                    <button data-action="improve" title="改进现有内容">📝 改进内容</button>
+                    <button data-action="translate" title="翻译内容">🌐 翻译内容</button>
+                    <button data-action="summarize" title="总结内容要点">📋 内容总结</button>
+                </div>
+                <textarea id="aiAssistInput" placeholder="请输入您的需求..."></textarea>
+                <div class="dialog-buttons">
+                    <button id="aiAssistSubmit">确定</button>
+                    <button id="aiAssistCancel">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 其他组件保持不变 -->
+        <!-- ... -->
+    </div>
+
+    <!-- 设置面板 -->
+    <div id="settingsPanel" class="settings-panel">
+        <div class="settings-content">
+            <h2>设置</h2>
+            <div class="setting-item">
+                <label for="temperatureInput">Temperature (0-1):</label>
+                <input type="range" id="temperatureInput" min="0" max="1" step="0.1" value="0.9">
+                <span id="temperatureValue">0.9</span>
+            </div>
+            <div class="setting-item">
+                <label for="maxTokensInput">最大输出长度:</label>
+                <input type="number" id="maxTokensInput" min="1" max="8192" value="8192">
+            </div>
+            <div class="setting-item">
+                <label>主题:</label>
+                <select id="themeSelect">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>快捷键设置:</label>
+                <div class="shortcut-list">
+                    <div>发送: Enter</div>
+                    <div>换行: Shift + Enter</div>
+                    <div>清除输入: Esc</div>
+                </div>
+            </div>
+            <div class="setting-buttons">
+                <button id="saveSettings">保存</button>
+                <button id="closeSettings">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文件导入预览 -->
+    <div id="filePreview" class="file-preview">
+        <div class="preview-content">
+            <h3>文本预览</h3>
+            <div id="fileContent" class="file-content"></div>
+            <div class="preview-buttons">
+                <button id="confirmImport">导入到输入框</button>
+                <button id="cancelImport">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 标题编辑对话框 -->
+    <div id="titleEditDialog" class="dialog">
+        <div class="dialog-content">
+            <h3>编辑标题</h3>
+            <input type="text" id="titleInput" placeholder="输入新标题">
+            <div class="dialog-buttons">
+                <button id="saveTitleButton">保存</button>
+                <button id="cancelTitleButton">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".txt,.md,.json,.js,.html,.css,.py" style="display: none">
+    
+    <!-- 使用ESM方式导入 -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+    }
+    </script>
+    <script type="module" src="chat.js"></script>
+
+    <!-- 新手提示组件 -->
+    <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-tip" id="tutorialTip">
+            <div class="tip-content">
+                <h3 class="tip-title">欢迎使用 Gemini AI 助手</h3>
+                <p class="tip-text"></p>
+                <div class="tip-buttons">
+                    <button class="tip-next">下一步</button>
+                    <button class="tip-skip">跳过教程</button>
+                </div>
+            </div>
+            <div class="tip-arrow"></div>
+        </div>
+    </div>
+</body>
+</html> 
