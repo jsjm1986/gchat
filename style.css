@@ -1425,8 +1425,75 @@ body {
 
     /* 侧边栏优化 */
     .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
         width: 85%;
         max-width: 320px;
+        height: 100%;
+        background: var(--bg-color);
+        z-index: 1000;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateX(-100%);
+        box-shadow: none;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* 优化侧边栏内部样式 */
+    .sidebar-header {
+        padding: 16px;
+        background: var(--primary-color);
+    }
+
+    #newChatButton {
+        height: 40px;
+        font-size: 15px;
+    }
+
+    .chat-list {
+        padding: 8px;
+    }
+
+    .chat-item {
+        padding: 12px;
+        margin: 4px 0;
+    }
+
+    .chat-item-title {
+        font-size: 15px;
+    }
+
+    .sidebar-footer {
+        padding: 16px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+
+    .sidebar-footer button {
+        height: 40px;
+        font-size: 15px;
     }
 
     /* 聊天区域优化 */
@@ -1989,123 +2056,6 @@ button:active::after {
 /* 移动端Canvas布局 */
 @media (max-width: 768px) {
     .canvas-container {
-        width: 100%;
-        right: -100%;
-    }
-
-    .canvas-container.active {
-        right: 0;
-    }
-
-    .app-container {
-        width: 100% !important;
-    }
-
-    .chat-container {
-        width: 100% !important;
-    }
-}
-
-/* 优化Canvas内容区域 */
-.canvas-workspace {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background: var(--bg-color);
-}
-
-/* 优化Canvas过渡效果 */
-.app-container,
-.chat-container,
-.canvas-container {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* PC端布局优化 */
-@media (min-width: 769px) {
-    /* 主容器布局 */
-    .app-container {
-        position: relative;
-        display: flex;
-        transition: all 0.3s ease;
-    }
-
-    /* Canvas编辑器样式 */
-    .canvas-container {
-        position: relative; /* 改为相对定位 */
-        right: auto; /* 取消固定定位的right值 */
-        width: 0; /* 默认宽度为0 */
-        min-width: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        flex-shrink: 0; /* 防止被压缩 */
-    }
-
-    .canvas-container.active {
-        width: 45%; /* 激活时的宽度 */
-        min-width: 400px;
-        max-width: 800px;
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* 聊天容器样式 */
-    .chat-container {
-        flex: 1;
-        min-width: 0; /* 允许容器缩小到小于内容宽度 */
-        transition: all 0.3s ease;
-    }
-
-    /* 侧边栏样式 */
-    .sidebar {
-        flex-shrink: 0;
-        width: var(--sidebar-width);
-    }
-
-    /* 工作区布局 */
-    .workspace {
-        display: flex;
-        flex: 1;
-        overflow: hidden;
-    }
-
-    /* 滚动条样式 */
-    .chat-messages::-webkit-scrollbar,
-    .canvas-workspace::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .chat-messages::-webkit-scrollbar-thumb,
-    .canvas-workspace::-webkit-scrollbar-thumb {
-        background: rgba(66, 133, 244, 0.3);
-        border-radius: 4px;
-    }
-
-    .chat-messages::-webkit-scrollbar-thumb:hover,
-    .canvas-workspace::-webkit-scrollbar-thumb:hover {
-        background: rgba(66, 133, 244, 0.5);
-    }
-
-    /* Canvas工作区样式 */
-    .canvas-workspace {
-        height: calc(100vh - 60px); /* 减去header高度 */
-        overflow-y: auto;
-    }
-
-    /* 聊天区域样式 */
-    .chat-messages {
-        height: calc(100vh - 140px); /* 减去header和input区域高度 */
-        overflow-y: auto;
-    }
-}
-
-/* 移动端布局保持不变 */
-@media (max-width: 768px) {
-    .canvas-container {
         position: fixed;
         top: 0;
         right: -100%;
@@ -2128,5 +2078,301 @@ button:active::after {
 @media (max-width: 480px) {
     .input-tip {
         font-size: 0.75rem;
+    }
+}
+
+/* 移动端输入区域优化 */
+@media (max-width: 768px) {
+    .chat-input {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-color);
+        padding: 10px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #userInput {
+        flex: 1;
+        min-height: 40px;
+        max-height: 120px;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-size: 16px;
+        line-height: 20px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-color);
+        resize: none;
+        overflow-y: auto;
+    }
+
+    #sendButton {
+        width: 40px;
+        height: 40px;
+        min-width: unset;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-color);
+        color: white;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    #sendButton::before {
+        content: "↑";
+        transform: translateY(-1px);
+    }
+
+    #sendButton .loading {
+        padding-right: 0;
+    }
+
+    /* 调整消息列表底部边距，防止被输入框遮挡 */
+    .chat-messages {
+        padding-bottom: 70px;
+    }
+}
+
+/* 移动端顶部导航优化 */
+@media (max-width: 768px) {
+    .chat-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        padding: 12px;
+        background: var(--primary-color);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 56px;
+    }
+
+    .menu-button {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+    }
+
+    .chat-title-container {
+        flex: 1;
+        margin-left: 5px;
+    }
+
+    .chat-title-container h1 {
+        font-size: 18px;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .header-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .header-buttons button {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 调整消息列表顶部边距，防止被导航栏遮挡 */
+    .chat-messages {
+        margin-top: 56px;
+        padding-top: 10px;
+    }
+}
+
+/* 移动端消息气泡优化 */
+@media (max-width: 768px) {
+    .message {
+        max-width: 85%;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        font-size: 15px;
+        line-height: 1.4;
+        border-radius: 18px;
+        word-break: break-word;
+        animation: messageSlide 0.3s ease;
+    }
+
+    .user-message {
+        border-bottom-right-radius: 4px;
+        margin-left: auto;
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .ai-message {
+        border-bottom-left-radius: 4px;
+        margin-right: auto;
+        background: var(--hover-bg);
+    }
+
+    /* 长按复制提示 */
+    .message::after {
+        content: "长按复制";
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: var(--text-color);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .message:active::after {
+        opacity: 0.6;
+    }
+
+    /* 优化代码块显示 */
+    .message pre {
+        margin: 8px -8px;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .message code {
+        font-size: 14px;
+    }
+
+    /* 优化滚动体验 */
+    .chat-messages {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        overscroll-behavior-y: contain;
+        padding: 10px;
+    }
+
+    /* 添加下拉刷新提示 */
+    .chat-messages::before {
+        content: "下拉刷新";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        color: var(--text-color);
+        opacity: 0;
+        transform: translateY(-100%);
+        transition: all 0.3s;
+    }
+
+    .chat-messages.pulling::before {
+        opacity: 0.6;
+        transform: translateY(0);
+    }
+}
+
+/* 移动端设置面板和对话框优化 */
+@media (max-width: 768px) {
+    .settings-panel .settings-content,
+    .dialog-content,
+    .preview-content {
+        width: 92%;
+        max-height: 85vh;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 20px;
+        position: relative;
+    }
+
+    .settings-content h2,
+    .dialog-content h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .setting-item {
+        margin-bottom: 15px;
+    }
+
+    .setting-item label {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .setting-item input,
+    .setting-item select,
+    .dialog-content input {
+        height: 40px;
+        font-size: 15px;
+        padding: 8px 12px;
+        border-radius: 10px;
+    }
+
+    .shortcut-list {
+        font-size: 14px;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .setting-buttons,
+    .dialog-buttons {
+        margin-top: 20px;
+        gap: 10px;
+    }
+
+    .setting-buttons button,
+    .dialog-buttons button {
+        flex: 1;
+        height: 40px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+
+    /* 添加关闭按钮 */
+    .settings-content::before,
+    .dialog-content::before {
+        content: "×";
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--text-color);
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+    /* 底部安全区域适配 */
+    .settings-panel,
+    .dialog {
+        padding-bottom: env(safe-area-inset-bottom);
     }
 }
